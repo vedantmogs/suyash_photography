@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photographer Portfolio</title>
+    <!-- Google Fonts for elegant typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for navigation */
+        }
+        body {
+            font-family: 'Poppins', sans-serif; /* Body font */
+            background-color: #000; /* Dark theme background */
+            color: #f5f5f5; /* Off-white text */
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif; /* Elegant serif for headings */
+        }
+        a {
+            color: #d4af37; /* Subtle gold accent for links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #f5f5f5; /* Hover to off-white */
+        }
+        section {
+            padding: 4rem 2rem; /* Large spacing for luxury feel */
+            min-height: 100vh; /* Full-screen sections for vertical scroll */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        #hero {
+            /* gradient only here; background image moves to ::before so we can blur it */
+            background: linear-gradient(180deg, rgba(14,20,40,0.25), rgba(7,16,38,0.25));
+            position: relative;
+            text-align: center;
+            color: #f5f5f5;
+            overflow: hidden;
+            animation: fadeIn 2s ease-in-out; /* Subtle fade-in */
+        }
+        /* blurred background layer */
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('bg.jpg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: blur(4px) saturate(0.98) contrast(0.98); /* reduced blur (~20% of previous) */
+            transform: scale(1.03); /* slight scale to avoid edges after blur */
+            z-index: 0;
+        }
+        /* overlay to darken/keep text readable */
+        #hero::after{
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7,10,20,0.45), rgba(3,6,12,0.55));
+            z-index: 1;
+        }
+        #hero .container {
+            position: relative;
+            z-index: 2;
+        }
+        #hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        #hero p {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* About Section */
+        #about {
+            background-color: #333; /* Charcoal background */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        #about .text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 2rem;
+        }
+        #about .image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        #about img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Portfolio Section */
+        #portfolio {
+            background-color: #000;
+        }
+        #portfolio h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Masonry-like grid */
+            gap: 1rem;
+        }
+        .gallery img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            border-radius: 10px;
+        }
+        .track-link{ position:relative; display:block }
+        .track-link .click-badge{ position:absolute; top:8px; right:8px; background:linear-gradient(90deg,#ffd166,#06d6a0); color:#051224; padding:4px 8px; border-radius:999px; font-size:0.8rem; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,0.35) }
+        .gallery img:hover {
+            transform: scale(1.05); /* Hover effect */
+            opacity: 0.9;
+        }
+
+        /* Services Section */
+        #services {
+            background-color: #333;
+        }
+        #services h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .track-link{ position:relative; display:block }
+        .track-link .click-badge{ position:absolute; top:8px; right:8px; background:linear-gradient(90deg,#ffd166,#06d6a0); color:#051224; padding:3px 8px; border-radius:999px; font-size:0.8rem; font-weight:700; box-shadow:0 6px 18px rgba(0,0,0,0.35) }
+        .service-card {
+            background-color: #000;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px); /* Lift effect */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        }
+        .service-card i {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        /* Testimonials Section */
+        #testimonials {
+            background-color: #000;
+        }
+        #testimonials h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        .testimonial-slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .testimonial {
+            display: none;
+            text-align: center;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .testimonial.active {
+            display: block;
+        }
+        .testimonial cite {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: #d4af37;
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: #333;
+        }
+        #contact h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #000;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
+        form button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #d4af37;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        form button:hover {
+            background-color: #f5f5f5;
+        }
+        .social-icons {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .social-icons a {
+            margin: 0 1rem;
+            font-size: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            text-align: center;
+            padding: 2rem;
+        }
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2.5rem;
+            }
+            #hero p {
+                font-size: 1.2rem;
+            }
+            #about {
+                flex-direction: column;
+                text-align: center;
+            }
+            #about .text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>Suyash More</h1> <!-- REPLACE: Your photographer name -->
+            <p>Capturing moments that last forever</p> <!-- REPLACE: Your tagline -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="text">
+                <h2>About Me</h2>
+                <p>आम्ही तुमच्या आयुष्यातील खास क्षण सुंदर आठवणींमध्ये बदलतो. वेडिंग, 
+                    \nप्री-वेडिंग, वाढदिवस, बाळाचा जन्म व नामकरण सोहळा तसेच कस्टमरच्या गरजेनुसार सर्व प्रकारचे फोटोशूट आम्ही करतो. 
+                    तुमची कल्पना आणि अपेक्षा समजून घेऊन, प्रत्येक शूट आम्ही क्रिएटिव्ह आणि प्रोफेशनल टचसह सादर करतो — जेणेकरून तुमचे क्षण कायमचे जपले जातील.<!-- REPLACE: Your about text --></p>
+            </div>
+            <div class="image">
+                <img src="person_image.JPG" alt="Photographer Portrait"> <!-- REPLACE: Your portrait image -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <div class="container">
+            <h2>My Work</h2>
+            <div class="gallery">
+                <!-- All gallery images wrapped in tracked anchors. Update each href as needed. -->
+                <a id="img1-link" class="track-link" data-key="img1" href="https://www.instagram.com/p/DSXWOyuArLu/" target="_blank" rel="noopener noreferrer"><img src="img1.jpg" alt="Portfolio Image 1"></a>
+                <a id="img2-link" class="track-link" data-key="img2" href="https://www.instagram.com/p/DSRzL0rAgjD/" target="_blank" rel="noopener noreferrer"><img src="img2.jpeg" alt="Portfolio Image 2"></a>
+                <a id="img3-link" class="track-link" data-key="img3" href="https://www.instagram.com/p/DSCqnzzAiBT/" target="_blank" rel="noopener noreferrer"><img src="img3.jpeg" alt="Portfolio Image 3"></a>
+                <a id="img4-link" class="track-link" data-key="img4" href="https://www.instagram.com/p/DSZ9f0bjL-W/" target="_blank" rel="noopener noreferrer"><img src="img4.jpeg" alt="Portfolio Image 4"></a>
+                <a id="img5-link" class="track-link" data-key="img5" href="https://www.instagram.com/p/DSZ9f0bjL-W/" target="_blank" rel="noopener noreferrer"><img src="img5.jpeg" alt="Portfolio Image 5"></a>
+                <a id="img6-link" class="track-link" data-key="img6" href="https://www.instagram.com/p/DRuHid-giAa/" target="_blank" rel="noopener noreferrer"><img src="img6.JPG" alt="Portfolio Image 6"></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <h2>सेवा</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>वेडिंग फोटोग्राफी</h3>
+                    <p>तुमच्या खास दिवसातील प्रत्येक सुंदर क्षण जपण्यासाठी.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-user"></i>
+                    <h3>पोर्ट्रेट फोटोग्राफी</h3>
+                    <p>तुमची कहाणी सांगणारे सुंदर आणि नैसर्गिक फोटो.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-tshirt"></i>
+                    <h3>फॅशन फोटोग्राफी</h3>
+                    <p>ब्रँड्स आणि मॉडेल्ससाठी स्टायलिश आणि प्रोफेशनल शूट.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>स्ट्रीट फोटोग्राफी</h3>
+                    <p>शहरातील नैसर्गिक आणि खरे क्षण कॅमेऱ्यात कैद.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <h2>ग्राहकांचे अभिप्राय</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial active">
+                    <p>"आमच्या लग्नाचे फोटो अप्रतिम आहेत. प्रत्येक क्षण सुंदररीत्या टिपलेला आहे."</p>
+                    <cite>- जान्हवी शेट्टी</cite>
+                </div>
+                <div class="testimonial">
+                    <p>"खूप प्रोफेशनल आणि क्रिएटिव्ह काम. काम करताना खूप चांगला अनुभव."</p>
+                    <cite>- रोहित देशमुख</cite>
+                </div>
+                <div class="testimonial">
+                    <p>"कोणत्याही फोटोग्राफीसाठी नक्कीच शिफारस करतो."</p>
+                    <cite>- स्नेहा पाटील</cite>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Me</h2>
+            <form action="#" method="post"> <!-- REPLACE: Add your form handler (e.g., PHP or service) -->
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="social-icons">
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a> <!-- REPLACE: Your social links -->
+                <a href="#" target="_blank"><i class="fab fa-behance"></i></a>
+                <a href="mailto:john@example.com"><i class="fas fa-envelope"></i></a> <!-- REPLACE: Your email -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 John Doe Photography. All rights reserved.</p> <!-- REPLACE: Your name/year -->
+            <p><a href="#hero">Back to Top</a></p>
+        </div>
+    </footer>
+
+    <!-- Minimal JavaScript -->
+    <script>
+        // Testimonials Slider
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial');
+        function showTestimonial(index) {
+            testimonials.forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+            });
+        }
+        function nextTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            showTestimonial(currentTestimonial);
+        }
+        setInterval(nextTestimonial, 5000); // Auto-advance every 5 seconds
+
+        // Ensure smooth scroll on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // No additional setup needed; CSS handles smooth scroll
+        });
+
+        // Generic click tracking for all gallery links with class .track-link
+        (function(){
+            const links = Array.from(document.querySelectorAll('.track-link'));
+            if(!links.length) return;
+            links.forEach(link => {
+                const key = link.dataset.key || link.id || Math.random().toString(36).slice(2,8);
+                const storageKey = `clicks_${key}_v1`;
+                const badge = document.createElement('span');
+                badge.className = 'click-badge';
+                badge.setAttribute('aria-hidden','false');
+                const readCount = ()=> parseInt(localStorage.getItem(storageKey) || '0', 10);
+                const writeCount = (n)=> { localStorage.setItem(storageKey, String(n)); badge.textContent = n; };
+                writeCount(readCount());
+                link.appendChild(badge);
+                link.addEventListener('click', ()=>{
+                    try{ writeCount(readCount() + 1); }
+                    catch(e){ console.error('click store failed', e); }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
